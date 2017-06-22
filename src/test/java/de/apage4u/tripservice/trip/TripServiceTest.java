@@ -25,6 +25,7 @@ public class TripServiceTest {
     @Before
     public void initialize() {
         tripService = new TestableTripService();
+        loggedInUser = REGISTERED_USER;
     }
 
     @Test(expected = UserNotLoggedInException.class)
@@ -36,8 +37,6 @@ public class TripServiceTest {
 
     @Test
     public void should_not_return_any_trips_when_users_are_not_friends() {
-        loggedInUser = REGISTERED_USER;
-
         User friend = new User();
         friend.addFriend(ANOTHER_USER);
         friend.addTrip(TO_BRAZIL);
@@ -49,8 +48,6 @@ public class TripServiceTest {
 
     @Test
     public void should_return_trips_when_users_are_friends() {
-        loggedInUser = REGISTERED_USER;
-
         User friend = new User();
         friend.addFriend(ANOTHER_USER);
         friend.addFriend(loggedInUser);
