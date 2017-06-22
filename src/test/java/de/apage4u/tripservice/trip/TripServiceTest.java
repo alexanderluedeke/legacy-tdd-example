@@ -1,5 +1,10 @@
 package de.apage4u.tripservice.trip;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
+import java.util.List;
+
 import org.junit.Test;
 
 import de.apage4u.tripservice.exception.UserNotLoggedInException;
@@ -9,6 +14,9 @@ public class TripServiceTest {
 
     private static final User GUEST = null;
     private static final User UNUSED_USER = null;
+    private static final User REGISTERED_USER = new User();
+    private static final User ANOTHER_USER = new User();
+    private static final Trip TO_BRAZIL = new Trip();
 
     private User loggedInUser;
 
@@ -18,6 +26,20 @@ public class TripServiceTest {
         loggedInUser = GUEST;
 
         tripService.getTripsByUser(UNUSED_USER);
+    }
+
+    @Test
+    public void should_not_return_any_trips_when_users_are_not_friends() {
+        TripService tripService = new TestableTripService();
+        loggedInUser = REGISTERED_USER;
+
+        User friend = new User();
+        friend.addFriend(ANOTHER_USER);
+        friend.addTrip(TO_BRAZIL);
+
+        List<Trip> friendTrips = tripService.getTripsByUser(friend);
+
+        assertThat(friendTrips.size(), is(0));
     }
 
     private class TestableTripService extends TripService {
