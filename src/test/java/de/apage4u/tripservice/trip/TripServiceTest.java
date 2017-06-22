@@ -1,5 +1,6 @@
 package de.apage4u.tripservice.trip;
 
+import static de.apage4u.tripservice.trip.UserBuilder.buildUser;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -37,9 +38,10 @@ public class TripServiceTest {
 
     @Test
     public void should_not_return_any_trips_when_users_are_not_friends() {
-        User friend = new User();
-        friend.addFriend(ANOTHER_USER);
-        friend.addTrip(TO_BRAZIL);
+        User friend = buildUser().
+                withFriends(ANOTHER_USER).
+                withTrips(TO_BRAZIL).
+                build();
 
         List<Trip> friendTrips = tripService.getTripsByUser((User) friend);
 
@@ -48,10 +50,10 @@ public class TripServiceTest {
 
     @Test
     public void should_return_trips_when_users_are_friends() {
-        User friend = new User();
-        friend.addFriend(ANOTHER_USER);
-        friend.addFriend(loggedInUser);
-        friend.addTrip(TO_BRAZIL);
+        User friend = buildUser().
+                withFriends(ANOTHER_USER, loggedInUser).
+                withTrips(TO_BRAZIL).
+                build();
 
         List<Trip> friendTrips = tripService.getTripsByUser((User) friend);
 
