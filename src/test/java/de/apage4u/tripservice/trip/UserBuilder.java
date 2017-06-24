@@ -2,12 +2,12 @@ package de.apage4u.tripservice.trip;
 
 import de.apage4u.tripservice.user.User;
 
-class UserBuilder {
+public class UserBuilder {
 
     private User[] friends = new User[] {};
     private Trip[] trips = new Trip[] {};
 
-    static UserBuilder buildUser() {
+    public static UserBuilder buildUser() {
         return new UserBuilder();
     }
 
@@ -16,12 +16,12 @@ class UserBuilder {
         return this;
     }
 
-    UserBuilder withFriends(User... friends) {
+    public UserBuilder withFriends(User... friends) {
         this.friends = friends;
         return this;
     }
 
-    User build() {
+    public User build() {
         User user = new User();
         addTripsTo(user);
         addFriendsTo(user);
