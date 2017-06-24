@@ -9,13 +9,10 @@ import de.apage4u.tripservice.user.UserSession;
 
 public class TripService {
 
-    public List<Trip> getTripsByUser(User user) throws UserNotLoggedInException {
-        User loggedUser = getLoggedUser();
-        if (loggedUser == null) {
-            throw new UserNotLoggedInException();
-        }
+    public List<Trip> getTripsByUser(User user, final User loggedInUser) throws UserNotLoggedInException {
+        validate(loggedInUser);
 
-        return user.isFriendWith(loggedUser)
+        return user.isFriendWith(loggedInUser)
                 ? tripsByUser(user)
                 : noTrips();
     }
@@ -24,8 +21,10 @@ public class TripService {
         return TripDAO.findTripsByUser(user);
     }
 
-    protected User getLoggedUser() {
-        return UserSession.getInstance().getLoggedUser();
+    private void validate(final User loggedInUser) {
+        if (loggedInUser == null) {
+            throw new UserNotLoggedInException();
+        }
     }
 
     private ArrayList<Trip> noTrips() {
