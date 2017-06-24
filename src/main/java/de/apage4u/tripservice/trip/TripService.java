@@ -17,7 +17,7 @@ public class TripService {
 
         return user.isFriendWith(loggedUser)
                 ? tripsByUser(user)
-                : new ArrayList<Trip>();
+                : noTrips();
     }
 
     protected List<Trip> tripsByUser(final User user) {
@@ -26,5 +26,9 @@ public class TripService {
 
     protected User getLoggedUser() {
         return UserSession.getInstance().getLoggedUser();
+    }
+
+    private ArrayList<Trip> noTrips() {
+        return new ArrayList<Trip>();
     }
 }
